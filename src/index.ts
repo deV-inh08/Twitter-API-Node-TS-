@@ -15,7 +15,7 @@ app.use('/users', userRouter)
 // run().catch(console.dir) => connect function
 
 // Connect Class
-databaseServices.catch(console.dir)
+databaseServices.connect().catch(console.dir)
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`)

@@ -1,11 +1,11 @@
 import {Response, Request, NextFunction} from 'express'
 
-export const loginValidator = (req: Request, res: Response, next: NextFunction) => {
+export const loginValidator = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body
     if(!email || !password) {
-        return res.status(400).json({
-            error: 'Missing email or password'
+        res.status(400).json({
+            message: "Email and Password is require!"
         })
-    };
+    }
     next()
 }

@@ -1,5 +1,6 @@
-import { MongoClient, ServerApiVersion } from 'mongodb'
+import { Collection, Db, MongoClient, ServerApiVersion } from 'mongodb'
 import { config } from 'dotenv'
+import { UserType } from '~/models/schema/User.schema'
 
 config()
 
@@ -23,20 +24,27 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@twi
 // Conver from function to Class
 class DatabaseServices {
     private client: MongoClient
+    private db: Db
     constructor() {
        this.client = new MongoClient(uri)
+       this.db = this.client.db(process.env.DB_NAME)
     }
 
     async connect() {
         try {
-            await this.client.connect();
-            await this.client.db("admin").command({ ping: 1 })
+            await this.db.command({ ping: 1 })
             console.log('Pinged your deployment. You success connect mongoDb')
-        } finally {
-            await this.client.close()
-        }
+        } catch(error) { 
+            console.log("Error", error)
+            throw error
+        } 
+    }
+
+    get users(): Collection<UserType> {
+        // get collection "users"
+        return this.db.collection(process.env.DB_USERS_COLLECTIONS as string)
     }
 };
 
-const databaseServices = new DatabaseServices().connect();
+const databaseServices = new DatabaseServices();
 export default databaseServices;
