@@ -1,7 +1,5 @@
 import { Request, Response } from "express"
-import databaseServices from "~/services/database.services"
-import userService from "~/services/users.services";
-
+import usersService from "~/services/users.services";
 
 const loginController = (req: Request, res: Response) => {
     const { email, password } = req.body
@@ -18,12 +16,12 @@ const loginController = (req: Request, res: Response) => {
 const registerController = async (req: Request, res: Response) => {
     const { email, password } = req.body
     try {
-        const result = userService.register({ email, password })
+        // userServices --> Database
+        const result = usersService.register({ email, password })
         res.json({
             message: "Register success",
             data: result
         })
-
     } catch(err) {
         res.status(400).json({
             error: err

@@ -10,7 +10,12 @@ class UsersService {
         }))
         return result
     }
+
+    async checkEmailExits(email: string) {
+        const user = await databaseServices.users.findOne({ email });
+        return Boolean(user)
+    }
 }
 
-const userService = new UsersService();
-export default userService
+const usersService = new UsersService();
+export default usersService
