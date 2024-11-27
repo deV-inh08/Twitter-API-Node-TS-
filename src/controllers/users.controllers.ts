@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import usersService from "~/services/users.services";
-import { ParamsDictionary } from "express-serve-static-core"
+import { NextFunction, ParamsDictionary } from "express-serve-static-core"
 import { RegisterReqBody } from "~/models/requests/user.request";
 
 const loginController = (req: Request, res: Response) => {
@@ -15,17 +15,18 @@ const loginController = (req: Request, res: Response) => {
     })
 };
 
-const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
+const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response, next: NextFunction) => {
     try {
         // userServices --> Database
+        // throw new Error("Loi roi")
         const result = await usersService.register(req.body)
         res.json({
             message: "Register success",
             data: result
         })
-    } catch(err) {
+    } catch(err: any) {
         res.status(400).json({
-            error: err
+            error: err.message
         })
     }    
 }

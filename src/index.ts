@@ -1,6 +1,7 @@
 import express from 'express'
 import userRouter from './routes/users.routes'
 import databaseServices from './services/database.services'
+import { defaultErrorHandler } from './middlewares/error.middlewares'
 
 const app = express()
 const PORT = 3001
@@ -16,6 +17,8 @@ app.use('/users', userRouter)
 
 // Connect Class
 databaseServices.connect().catch(console.dir)
+
+app.use(defaultErrorHandler)
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`)

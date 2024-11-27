@@ -5,9 +5,6 @@ import { hashPassword } from "~/utils/crypto"
 import { signToken } from "~/utils/jwt"
 import { TokenType } from "~/constants/enum"
 
-console.log(process.env.ACCESS_TOKEN_EXPIRES_IN)
-console.log(process.env.REFRESH_TOKEN_EXPIRES_IN)
-
 class UsersService {
   private signAccessToken(user_id: string) {
     return signToken({
