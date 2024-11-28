@@ -1,6 +1,7 @@
 import { Collection, Db, MongoClient, ServerApiVersion } from 'mongodb'
 import { config } from 'dotenv'
 import { UserType } from '~/models/schema/User.schema'
+import RefreshToken from '~/models/schema/RefreshToken.schema'
 
 config()
 
@@ -43,6 +44,10 @@ class DatabaseServices {
     get users(): Collection<UserType> {
         // get collection "users"
         return this.db.collection(process.env.DB_USERS_COLLECTIONS as string)
+    }
+
+    get refreshToken(): Collection<RefreshToken>{
+      return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTION as string)
     }
 };
 

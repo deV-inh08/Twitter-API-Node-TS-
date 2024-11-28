@@ -6,6 +6,7 @@ const USERS_MESSAGE = {
   EMAIL_ALREADY_EXITS: 'Email already exits',
   EMAIL_IS_REQUIRED: 'Email is requied',
   EMAIL_IS_INVALID: 'Email is invalid',
+  EMAIL_OR_PASSWORD_INCORRECT: 'Email or password is incorrect',
   USER_NOT_FOUND: 'User not found',
   PASSWORD_IS_REQUIRED: 'Password is required',
   PASSWORD_MUST_BE_A_STRING: 'Password must be a string',

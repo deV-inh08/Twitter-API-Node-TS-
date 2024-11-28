@@ -1,5 +1,7 @@
 import jwt, { SignOptions }  from 'jsonwebtoken'
+import { config } from 'dotenv'
 
+config()
 interface Props {
   payload: string | Buffer | object,
   privateKey?: string
