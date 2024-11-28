@@ -17,6 +17,7 @@ class UsersService {
       }
     })
   }
+
   private signRefreshToken(user_id: string) {
     return signToken({
       payload: {
@@ -28,28 +29,41 @@ class UsersService {
       }
     })
   }
-    async register(payload: RegisterReqBody) {
-        const result = await databaseServices.users.insertOne(new User({
-            ...payload,
-            date_of_birth: new Date(payload.date_of_birth),
-            password: hashPassword(payload.password)
-          })
-        )
-        const user_id = result.insertedId.toString()
-        const [access_token, refresh_token] = await Promise.all([
-          this.signAccessToken(user_id),
-          this.signRefreshToken(user_id)
-        ])
-        return {
-          access_token,
-          refresh_token
-        }
-    }
 
-    async checkEmailExits(email: string) {
-        const user = await databaseServices.users.findOne({ email });
-        return Boolean(user)
+  private signAccessAndRefreshToken(user_id: string) {
+    return Promise.all([
+      this.signAccessToken(user_id),
+      this.signRefreshToken(user_id)
+    ])
+  }
+
+  async register(payload: RegisterReqBody) {
+    const result = await databaseServices.users.insertOne(new User({
+      ...payload,
+      date_of_birth: new Date(payload.date_of_birth),
+      password: hashPassword(payload.password)
+    })
+    )
+    const user_id = result.insertedId.toString()
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id)
+    return {
+      access_token,
+      refresh_token
     }
+  }
+
+  async login(user_id: string) {
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id);
+    return {
+      access_token,
+      refresh_token
+    }
+  }
+
+  async checkEmailExits(email: string) {
+    const user = await databaseServices.users.findOne({ email });
+    return Boolean(user)
+  }
 }
 
 const usersService = new UsersService();

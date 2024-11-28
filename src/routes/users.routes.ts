@@ -8,7 +8,7 @@ const userRouter = Router()
 // middleware || handler
 
 // (path, middlewares, controller) || (path, controller)
-userRouter.post('/login', loginValidator, loginController)
+userRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
 
 
 // Register a new user

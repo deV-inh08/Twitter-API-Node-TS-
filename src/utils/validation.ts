@@ -20,9 +20,8 @@ const validate = (validation: RunnableValidationChains<ValidationChain>) => {
           if(msg instanceof ErrorWithStatus && msg.status !== HTTP_STATUS.UNPROCESSABLE_UNTITY) {
             return next(msg)
           }
-          entityError.errors[key] = msg
+          entityError.errors[key] = errorsObject[key]
         }
-     
         next(entityError)
     }
 };
