@@ -25,6 +25,8 @@ const USERS_MESSAGE = {
   
   LOGIN_SUCCESS: 'Login successfully',
   REGISTER_SUCCESS: 'Register successfully',
+  LOGOUT_SUCCESS: "logout successfully",
+
 
   ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
   REFRESH_TOKEN_IS_REQUIRED: 'Refresh token is required',
@@ -32,7 +34,12 @@ const USERS_MESSAGE = {
 
   USED_REFRESH_TOKEN_OR_NOT_EXITS: 'Used refresh token or not exits',
 
-  LOGOUT_SUCCESS: "logout successfully"
+  EMAIL_VERIFY_TOKEN_IS_REQUIRED: 'Email verify token is required',
+  EMAIL_ALREADY_VERIFIED_BEFORE: 'Email already verified before',
+  EMAIL_VERIFY_SUCCESS: 'Email verify success',
+
+  USER_NOT_FOUND: 'User not found'
+
 } as const
 
 export default USERS_MESSAGE
