@@ -38,7 +38,9 @@ const USERS_MESSAGE = {
   EMAIL_ALREADY_VERIFIED_BEFORE: 'Email already verified before',
   EMAIL_VERIFY_SUCCESS: 'Email verify success',
 
-  USER_NOT_FOUND: 'User not found'
+  USER_NOT_FOUND: 'User not found',
+
+  RESEND_VERIFY_EMAIL_SUCCESS: 'Resend verify email success',
 
 } as const
 

@@ -173,7 +173,7 @@ export const accessTokenValidator = validate(checkSchema({
     },
     custom: {
       options: async (value: string, { req }) => {
-        const access_token = (value || '').split(' ')[1]
+        const access_token = value.split(' ')[1]
         if(!access_token) {
           throw new ErrorWithStatus({ 
             message: USERS_MESSAGE.ACCESS_TOKEN_IS_REQUIRED, 
