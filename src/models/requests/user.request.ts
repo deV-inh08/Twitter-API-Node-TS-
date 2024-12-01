@@ -10,6 +10,10 @@ export interface LoginReqBody {
 export interface VerifyEmailReqBody {
   email_verify_token: string
 }
+
+export interface ForgotPasswordReqBody {
+  email: string
+}
 export interface RegisterReqBody {
   name: string
   email: string
