@@ -19,3 +19,9 @@ export default class RefreshToken {
     this.user_id = user_id
   }
 }
+
+export interface ResetPasswordReqBody {
+  password: string
+  confirm_password: string
+  forgot_password_token: string
+}
