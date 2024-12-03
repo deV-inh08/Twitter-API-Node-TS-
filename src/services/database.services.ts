@@ -6,10 +6,7 @@ import RefreshToken from '~/models/schema/RefreshToken.schema'
 config()
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@twitter.47hsd.mongodb.net/?retryWrites=true&w=majority&appName=Twitter`
-
-
 // const client = new MongoClient(uri);
-
 // export async function run() {
 //     try {
 //         // Connect the client to the server

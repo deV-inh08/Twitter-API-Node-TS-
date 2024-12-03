@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
-import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController } from '~/controllers/users.controllers'
-import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator } from '~/middlewares/users.middlewares'
+import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController } from '~/controllers/users.controllers'
+import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
 const userRouter = Router()
@@ -66,5 +66,12 @@ userRouter.post('/reset-password', resetPasswordValidator, wrapRequestHandler(re
 // GET
 // Body: { forgot_password_token : string, password: string, confirm_password: string }
 userRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
+
+
+// Update my profile
+// path: /me
+// PATCH
+// Body: { forgot_password_token : string, password: string, confirm_password: string }
+userRouter.patch('/me', accessTokenValidator, verifyUserValidator, wrapRequestHandler(updateMeController))
 
 export default userRouter

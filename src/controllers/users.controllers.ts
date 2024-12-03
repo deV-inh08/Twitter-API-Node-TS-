@@ -13,7 +13,7 @@ import { ResetPasswordReqBody } from "~/models/schema/RefreshToken.schema";
 const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   const user = req.user as User
   const user_id = user._id as ObjectId
-  const result = await usersService.login(user_id.toString())
+  const result = await usersService.login({ user_id: user_id.toString(), verify: UserVerifyStatus.Verified })
   return res.json({
     message: USERS_MESSAGE.LOGIN_SUCCESS,
     result: result
@@ -89,9 +89,8 @@ const resendVerifyEmailController = async (req: Request, res: Response, next: Ne
 
 
 const forgotPasswordController = async (req: Request<ParamsDictionary, any, ForgotPasswordReqBody>, res: Response, next: NextFunction) => {
-  const { _id } = req.user as User;
-  console.log(_id)
-  const result = await usersService.forgotPassword((_id as ObjectId).toString())
+  const { _id, verify } = req.user as User;
+  const result = await usersService.forgotPassword({ user_id: (_id as ObjectId).toString(), verify })
   return res.json(result)
 }
 
@@ -115,6 +114,13 @@ const getMeController =  async (req: Request<ParamsDictionary, any, ResetPasswor
     result: user
   })
 }
+
+const updateMeController = async (req: Request<ParamsDictionary, any, ResetPasswordReqBody>, res: Response, next: NextFunction) => {
+  return res.json({
+    
+  })
+}
+
 export { 
   loginController, 
   registerController, 
@@ -124,5 +130,6 @@ export {
   forgotPasswordController,
   verifyForgotPasswordController,
   resetPasswordController,
-  getMeController
+  getMeController,
+  updateMeController
 };

@@ -39,7 +39,8 @@ const USERS_MESSAGE = {
   EMAIL_VERIFY_SUCCESS: 'Email verify success',
 
   USER_NOT_FOUND: 'User not found',
-
+  USER_NOT_VERIFIED: 'User not verified',
+  
   RESEND_VERIFY_EMAIL_SUCCESS: 'Resend verify email success',
 
   CHECK_EMAIL_TO_RESET_PASSWORD: 'Check email to reset password',
