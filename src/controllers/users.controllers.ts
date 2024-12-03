@@ -9,6 +9,7 @@ import databaseServices from "~/services/database.services";
 import HTTP_STATUS from "~/constants/httpStatus";
 import { UserVerifyStatus } from "~/constants/enum";
 import { ResetPasswordReqBody } from "~/models/schema/RefreshToken.schema";
+import { pick } from "lodash";
 
 const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   const user = req.user as User
