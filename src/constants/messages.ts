@@ -47,7 +47,9 @@ const USERS_MESSAGE = {
   FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Fotgot password token is required',
   FORGOT_PASSWORD_TOKEN_INVALID: 'Forgot password token invalid',
 
-  VERIFY_FORGOT_PASSWORD_SUCCESS: 'Verify forgot password success'
+  VERIFY_FORGOT_PASSWORD_SUCCESS: 'Verify forgot password success',
+
+  GET_MY_PROFILE_SUCCESS: 'Get my profile success'
 
 } as const
 

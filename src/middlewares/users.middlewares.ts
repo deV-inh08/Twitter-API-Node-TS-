@@ -9,7 +9,7 @@ import usersService from '~/services/users.services'
 import { hashPassword } from '~/utils/crypto'
 import { verifyToken } from '~/utils/jwt'
 import validate from '~/utils/validation'
-import { capitalize, isString } from "lodash"
+import { capitalize } from "lodash"
 import { ObjectId } from 'mongodb'
 
 
