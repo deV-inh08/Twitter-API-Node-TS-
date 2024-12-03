@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController } from '~/controllers/users.controllers'
-import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, verifyUserValidator } from '~/middlewares/users.middlewares'
+import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, updateMeValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
 const userRouter = Router()
@@ -72,6 +72,6 @@ userRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMeController))
 // path: /me
 // PATCH
 // Body: { forgot_password_token : string, password: string, confirm_password: string }
-userRouter.patch('/me', accessTokenValidator, verifyUserValidator, wrapRequestHandler(updateMeController))
+userRouter.patch('/me', accessTokenValidator ,verifiedUserValidator, updateMeValidator, wrapRequestHandler(updateMeController))
 
 export default userRouter

@@ -18,7 +18,7 @@ export const signToken = ({ payload, privateKey, option = { algorithm: 'HS256' }
       return resolve(token as string)
     })
   })
-}
+};
 
 export const verifyToken = ({ token, secretOrPublicKey }: {token: string, secretOrPublicKey: string}) => {
   return new Promise<TokenPayload>((resolve, reject) => {
@@ -29,4 +29,4 @@ export const verifyToken = ({ token, secretOrPublicKey }: {token: string, secret
       resolve(decoded as TokenPayload)
     })
   })
-}
+};

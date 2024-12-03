@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import usersService from "~/services/users.services";
 import { NextFunction, ParamsDictionary } from "express-serve-static-core"
-import { ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, VerifyEmailReqBody } from "~/models/requests/user.request";
+import { ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
 import { ObjectId } from "mongodb";
 import { User } from "~/models/schema/User.schema";
 import USERS_MESSAGE from "~/constants/messages";
@@ -115,9 +115,13 @@ const getMeController =  async (req: Request<ParamsDictionary, any, ResetPasswor
   })
 }
 
-const updateMeController = async (req: Request<ParamsDictionary, any, ResetPasswordReqBody>, res: Response, next: NextFunction) => {
+const updateMeController = async (req: Request<ParamsDictionary, any, UpdateMeReqBody >, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  const { body } = req;
+  const user = await usersService.updateMe(user_id, body)
   return res.json({
-    
+    message: USERS_MESSAGE.UPDATE_ME_SUCCESS,
+    result: user
   })
 }
 

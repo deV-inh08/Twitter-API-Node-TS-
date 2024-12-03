@@ -40,7 +40,7 @@ const USERS_MESSAGE = {
 
   USER_NOT_FOUND: 'User not found',
   USER_NOT_VERIFIED: 'User not verified',
-  
+
   RESEND_VERIFY_EMAIL_SUCCESS: 'Resend verify email success',
 
   CHECK_EMAIL_TO_RESET_PASSWORD: 'Check email to reset password',
@@ -50,7 +50,25 @@ const USERS_MESSAGE = {
 
   VERIFY_FORGOT_PASSWORD_SUCCESS: 'Verify forgot password success',
 
-  GET_MY_PROFILE_SUCCESS: 'Get my profile success'
+  GET_MY_PROFILE_SUCCESS: 'Get my profile success',
+
+  BIO_MUST_BE_A_STRING: 'Bio must be a string',
+  BIO_LENGTH_MUST_BE_FROM_1_TO_200: 'Bio length must be from 1 to 200',
+
+  LOCATION_MUST_BE_A_STRING: 'Location must be a string',
+  LOCATION_LENGTH: 'Location length must be from 1 to 200',
+
+  WEBSITE_MUST_BE_A_STRING: "Website must be a string",
+  WEBSITE_LENGTH: 'Website length must be from 1 to 200',
+
+  USERNAME_MUST_BE_A_STRING: 'Username must be a string',
+  USERNAME_LENGTH: 'Username must be from 1 to 100',
+
+  IMAGE_URL_MUST_BE_A_STRING: 'Image URL must be a string',
+  IMAGE_URL_LENGTH: 'Image URL must be from 1 to 200',
+
+  UPDATE_ME_SUCCESS: "Update me success"
+
 
 } as const
 
