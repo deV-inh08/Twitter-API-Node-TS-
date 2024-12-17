@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
-import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController } from '~/controllers/users.controllers'
+import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController, followController } from '~/controllers/users.controllers'
 import { filterMiddleware } from '~/middlewares/common.middlewares'
-import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, updateMeValidator, verifiedUserValidator } from '~/middlewares/users.middlewares'
+import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, updateMeValidator, verifiedUserValidator, followValidator } from '~/middlewares/users.middlewares'
 import { UpdateMeReqBody } from '~/models/requests/user.request'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -11,7 +11,7 @@ const userRouter = Router()
 // (path, middlewares, controller) || (path, controller)
 
 
-// Register a new user
+// Login a new user
 // POST
 // Body { email: string, password: string }
 userRouter.post('/login', loginValidator, wrapRequestHandler(loginController))
@@ -88,6 +88,24 @@ userRouter.patch('/me',
     "avatar",
     "cover_photo"
   ]),
-  wrapRequestHandler(updateMeController))
+  wrapRequestHandler(updateMeController)
+)
+
+
+
+// Change Password
+// path: /change-password
+// PUT
+// Body: { forgot_password_token : string, password: string, confirm_password: string }
+
+
+
+
+// Follow user
+// path: /follow
+// POST
+// Header: { Authorization: Bearer <access_token> }
+// Body: { follow_user_id: string }
+userRouter.post("/follow", accessTokenValidator, updateMeValidator, followValidator, wrapRequestHandler(followController))
 
 export default userRouter

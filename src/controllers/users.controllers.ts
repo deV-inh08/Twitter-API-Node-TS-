@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import usersService from "~/services/users.services";
 import { NextFunction, ParamsDictionary } from "express-serve-static-core"
-import { ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
+import { FollowRedBody, ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
 import { ObjectId } from "mongodb";
 import { User } from "~/models/schema/User.schema";
 import USERS_MESSAGE from "~/constants/messages";
@@ -24,7 +24,7 @@ const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>
 const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response, next: NextFunction) => {
   try {
     // userServices --> Database
-    const result = await usersService.register(req.body)
+    const result = await usersService.register(req.body);
     res.json({
       message: USERS_MESSAGE.REGISTER_SUCCESS,
       data: result
@@ -113,8 +113,8 @@ const getMeController =  async (req: Request<ParamsDictionary, any, ResetPasswor
   return res.json({
     message: USERS_MESSAGE.GET_MY_PROFILE_SUCCESS,
     result: user
-  })
-}
+  });
+};
 
 const updateMeController = async (req: Request<ParamsDictionary, any, UpdateMeReqBody >, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_authorization as TokenPayload;
@@ -123,8 +123,18 @@ const updateMeController = async (req: Request<ParamsDictionary, any, UpdateMeRe
   return res.json({
     message: USERS_MESSAGE.UPDATE_ME_SUCCESS,
     result: user
-  })
+  });
+};
+
+const followController = async (req: Request<ParamsDictionary, any, FollowRedBody>, res: Response, next: NextFunction) => {
+  const { user_id } = (req as Request).decoded_authorization as TokenPayload;
+  console.log(user_id)
+  const { followed_user_id } = req.body;
+  const result = await usersService.follow(user_id, followed_user_id)
+  return res.json(result)
 }
+
+
 
 export { 
   loginController, 
@@ -136,5 +146,6 @@ export {
   verifyForgotPasswordController,
   resetPasswordController,
   getMeController,
-  updateMeController
+  updateMeController,
+  followController
 };

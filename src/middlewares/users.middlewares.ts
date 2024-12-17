@@ -14,7 +14,6 @@ import { ObjectId } from 'mongodb'
 import { TokenPayload } from '~/models/requests/user.request'
 import { UserVerifyStatus } from '~/constants/enum'
 
-
 const passwordSchema: ParamSchema = {
   notEmpty: {
     errorMessage: USERS_MESSAGE.PASSWORD_IS_REQUIRED
@@ -159,7 +158,7 @@ const imageURLSchema: ParamSchema = {
     },
     errorMessage: USERS_MESSAGE.IMAGE_URL_LENGTH
   }
-}
+};
  
   export const loginValidator = validate(checkSchema({
   email: {
@@ -382,7 +381,7 @@ export const resetPasswordValidator = validate(checkSchema({
 export const verifiedUserValidator = (req: Request, res: Response, next: NextFunction) => {
   const { verify } = req.decoded_authorization as TokenPayload;
   if(verify !== UserVerifyStatus.Verified) {
-   next(new ErrorWithStatus({
+   return next(new ErrorWithStatus({
     message: USERS_MESSAGE.USER_NOT_VERIFIED,
     status: HTTP_STATUS.FORBIDEN
    }))
@@ -460,4 +459,30 @@ export const updateMeValidator = validate(checkSchema({
   avatar: imageURLSchema,
   cover_photo: imageURLSchema
 }, ['body']
-))
+));
+
+
+export const followValidator = validate(checkSchema({
+  followed_user_id: {
+    custom: {
+      options: async ( value, { req } ) => {
+        if(!ObjectId.isValid(value)) {
+          throw new ErrorWithStatus({
+            message: USERS_MESSAGE.INVALID_FOLLOWED_USER_ID,
+            status: HTTP_STATUS.NOT_FOUND
+          })
+        }
+        const followed_user = await databaseServices.users.findOne({
+          _id: new ObjectId(value)
+        })
+        
+        if(followed_user === null) {
+          throw new ErrorWithStatus({
+            message: USERS_MESSAGE.USER_NOT_FOUND,
+            status: HTTP_STATUS.NOT_FOUND
+          })
+        }
+      }
+    }
+  }
+}))

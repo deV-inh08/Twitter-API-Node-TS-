@@ -67,8 +67,13 @@ const USERS_MESSAGE = {
   IMAGE_URL_MUST_BE_A_STRING: 'Image URL must be a string',
   IMAGE_URL_LENGTH: 'Image URL must be from 1 to 200',
 
-  UPDATE_ME_SUCCESS: "Update me success"
+  UPDATE_ME_SUCCESS: "Update me success",
 
+  FOLLOW_SUCCESS: 'Follow success',
+
+  INVALID_FOLLOWED_USER_ID: "Invalid followed user id",
+
+  FOLLOWED: "Follwed"
 
 } as const
 

@@ -8,10 +8,11 @@ import RefreshToken from "~/models/schema/RefreshToken.schema"
 import { ObjectId } from "mongodb"
 import { config } from "dotenv"
 import USERS_MESSAGE from "~/constants/messages"
+import Follower from "~/models/schema/Follower.schema"
 
 config()
 class UsersService {
-  private signAccessToken({user_id, verify}: {user_id: string, verify: UserVerifyStatus}) {
+  private signAccessToken({ user_id, verify }: {user_id: string, verify: UserVerifyStatus}) {
     return signToken({
       payload: {
         user_id,
@@ -51,14 +52,14 @@ class UsersService {
         expiresIn: process.env.EMAIL_VERIFY_TOKEN_EXPIRES_IN
       }
     })
-  }
+  };
 
-  private signAccessAndRefreshToken({user_id, verify}: {user_id: string, verify: UserVerifyStatus}) {
+  private signAccessAndRefreshToken({ user_id, verify }: { user_id: string, verify: UserVerifyStatus }) {
     return Promise.all([
       this.signAccessToken({ user_id, verify }),
       this.signRefreshToken({ user_id, verify })
     ])
-  }
+  };
 
   private signForgotPasswordToken({ user_id, verify }: {user_id: string, verify: UserVerifyStatus}) {
     return signToken({
@@ -71,7 +72,7 @@ class UsersService {
         expiresIn: process.env.FORGOT_PASSWORD_TOKEN_EXPIRES_IN
       }
     })
-  }
+  };
 
   async register(payload: RegisterReqBody) {
     const user_id = new ObjectId()
@@ -91,26 +92,26 @@ class UsersService {
       access_token,
       refresh_token
     }
-  }
+  };
 
-  async login({user_id, verify}: {user_id: string, verify: UserVerifyStatus}) {
-    const [access_token, refresh_token] = await this.signAccessAndRefreshToken({user_id, verify});
+  async login({ user_id, verify }: { user_id: string, verify: UserVerifyStatus }) {
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken({ user_id, verify });
     await databaseServices.refreshTokens.insertOne(new RefreshToken({user_id: new ObjectId(user_id), token: refresh_token}))
     return {
       access_token,
       refresh_token
     }
-  }
+  };
 
   async checkEmailExits(email: string) {
     const user = await databaseServices.users.findOne({ email });
     return Boolean(user)
-  }
+  };
 
   async logout(refresh_token: string) {
     const result = await databaseServices.refreshTokens.deleteOne({ token: refresh_token });
     return result
-  }
+  };
 
   async verifyEmail(user_id: string) {
     const [token] = await Promise.all([
@@ -136,7 +137,7 @@ class UsersService {
       access_token,
       refresh_token
     }
-  }
+  };
 
   async resendVerifyEmail(user_id: string) {
     const email_verify_token = await this.signEmailVerifyToken({ user_id: user_id.toString(), verify: UserVerifyStatus.Unverified })
@@ -158,7 +159,7 @@ class UsersService {
     return {
       message: USERS_MESSAGE.RESEND_VERIFY_EMAIL_SUCCESS
     }
-  }
+  };
 
   async forgotPassword({ user_id, verify }: {user_id: string, verify: UserVerifyStatus}) {
     const forgot_password_token = await this.signForgotPasswordToken({ user_id, verify });
@@ -197,7 +198,7 @@ class UsersService {
       }
     }
   )
-  }
+  };
 
   async getMe(user_id: string) {
     const user = databaseServices.users.findOne(
@@ -228,7 +229,7 @@ class UsersService {
           updated_at: true
         }
       },
-      // change type ==> Modify Result
+      // change type ==> ModifyResult
       {
         returnDocument: 'after',
         includeResultMetadata: true
@@ -236,6 +237,26 @@ class UsersService {
     )
     return user.value
   }
+
+  async follow(user_id: string, followed_user_id: string) {
+    const follower = await databaseServices.followers.findOne({
+      user_id: new ObjectId(user_id),
+      followed_user_id: new ObjectId(followed_user_id)
+    });
+    if(follower === null) {
+      databaseServices.followers.insertOne(new Follower({
+        user_id: new ObjectId(user_id),
+        followed_user_id: new ObjectId(followed_user_id)
+      }));
+      return {
+        message: USERS_MESSAGE.FOLLOW_SUCCESS
+      }
+    }
+    return {
+      message: USERS_MESSAGE.FOLLOWED
+    }
+  }
+
 }
 
 const usersService = new UsersService();
