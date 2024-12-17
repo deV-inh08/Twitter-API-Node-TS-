@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import usersService from "~/services/users.services";
 import { NextFunction, ParamsDictionary } from "express-serve-static-core"
-import { FollowRedBody, ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UnFollowRedParams, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
+import { ChangePasswordReqBody, FollowRedBody, ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UnFollowRedParams, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
 import { ObjectId } from "mongodb";
 import { User } from "~/models/schema/User.schema";
 import USERS_MESSAGE from "~/constants/messages";
@@ -138,8 +138,14 @@ const unfollowController = async (req: Request<UnFollowRedParams>, res: Response
   const { user_id: follwed_user_id } = req.params
   const result = await usersService.unFollow(user_id, follwed_user_id);
   return res.json(result)
-}
+};
 
+const changePasswordController = async (req: Request<ParamsDictionary, any, ChangePasswordReqBody>, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  const { password } = req.body;
+  const result = await usersService.changePassword(user_id, password);
+  return res.json(result)
+}
 
 
 export { 
@@ -154,5 +160,6 @@ export {
   getMeController,
   updateMeController,
   followController,
-  unfollowController
+  unfollowController,
+  changePasswordController
 };

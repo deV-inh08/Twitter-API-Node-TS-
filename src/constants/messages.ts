@@ -79,7 +79,11 @@ const USERS_MESSAGE = {
 
   ALREADY_UNFOLLOWED: "Already unfollowed",
 
-  UNFOLLOW_SUCCESSS: "Unfollow success"
+  UNFOLLOW_SUCCESSS: "Unfollow success",
+
+  OLD_PASSWORD_NOT_MATCH: 'Old password not match',
+
+  CHANGE_PASSWORD_SUCCESS: 'Change password success'
 
 } as const
 
