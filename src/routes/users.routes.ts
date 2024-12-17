@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
-import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController, followController } from '~/controllers/users.controllers'
+import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController, followController, unfollowController } from '~/controllers/users.controllers'
 import { filterMiddleware } from '~/middlewares/common.middlewares'
-import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, updateMeValidator, verifiedUserValidator, followValidator } from '~/middlewares/users.middlewares'
+import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, updateMeValidator, verifiedUserValidator, followValidator, unFollowValidator } from '~/middlewares/users.middlewares'
 import { UpdateMeReqBody } from '~/models/requests/user.request'
 import { wrapRequestHandler } from '~/utils/handlers'
 
@@ -107,5 +107,13 @@ userRouter.patch('/me',
 // Header: { Authorization: Bearer <access_token> }
 // Body: { follow_user_id: string }
 userRouter.post("/follow", accessTokenValidator, updateMeValidator, followValidator, wrapRequestHandler(followController))
+
+
+// unFollow user
+// path: /follow/:user_id
+// DELETE
+// Header: { Authorization: Bearer <access_token> }
+// Body: { follow_user_id: string }
+userRouter.delete("/follow/:user_id", accessTokenValidator, updateMeValidator, unFollowValidator, wrapRequestHandler(unfollowController))
 
 export default userRouter

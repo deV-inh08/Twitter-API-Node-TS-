@@ -63,6 +63,8 @@ const USERS_MESSAGE = {
 
   USERNAME_MUST_BE_A_STRING: 'Username must be a string',
   USERNAME_LENGTH: 'Username must be from 1 to 100',
+  USERNAME_INVALID: 'Username must be 4-15 characters long and contain only letters, numbers, underscores, not only numbers',
+  USERNAME_EXISTED: 'Username exists',
 
   IMAGE_URL_MUST_BE_A_STRING: 'Image URL must be a string',
   IMAGE_URL_LENGTH: 'Image URL must be from 1 to 200',
@@ -71,9 +73,13 @@ const USERS_MESSAGE = {
 
   FOLLOW_SUCCESS: 'Follow success',
 
-  INVALID_FOLLOWED_USER_ID: "Invalid followed user id",
+  FOLLOWED: "Follwed",
 
-  FOLLOWED: "Follwed"
+  INVALID_USER_ID: "Invalid user id",
+
+  ALREADY_UNFOLLOWED: "Already unfollowed",
+
+  UNFOLLOW_SUCCESSS: "Unfollow success"
 
 } as const
 

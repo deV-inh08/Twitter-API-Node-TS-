@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import usersService from "~/services/users.services";
 import { NextFunction, ParamsDictionary } from "express-serve-static-core"
-import { FollowRedBody, ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
+import { FollowRedBody, ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UnFollowRedParams, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
 import { ObjectId } from "mongodb";
 import { User } from "~/models/schema/User.schema";
 import USERS_MESSAGE from "~/constants/messages";
@@ -128,9 +128,15 @@ const updateMeController = async (req: Request<ParamsDictionary, any, UpdateMeRe
 
 const followController = async (req: Request<ParamsDictionary, any, FollowRedBody>, res: Response, next: NextFunction) => {
   const { user_id } = (req as Request).decoded_authorization as TokenPayload;
-  console.log(user_id)
   const { followed_user_id } = req.body;
   const result = await usersService.follow(user_id, followed_user_id)
+  return res.json(result)
+}
+
+const unfollowController = async (req: Request<UnFollowRedParams>, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload
+  const { user_id: follwed_user_id } = req.params
+  const result = await usersService.unFollow(user_id, follwed_user_id);
   return res.json(result)
 }
 
@@ -147,5 +153,6 @@ export {
   resetPasswordController,
   getMeController,
   updateMeController,
-  followController
+  followController,
+  unfollowController
 };
