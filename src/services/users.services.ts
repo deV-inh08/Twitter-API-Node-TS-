@@ -132,7 +132,11 @@ class UsersService {
         
       )
     ]);
-    const [access_token, refresh_token] = token
+    const [access_token, refresh_token] = token;
+    await databaseServices.refreshTokens.insertOne(new RefreshToken({
+      user_id: new ObjectId(user_id),
+      token: refresh_token
+    }))
     return {
       access_token,
       refresh_token
@@ -141,7 +145,6 @@ class UsersService {
 
   async resendVerifyEmail(user_id: string) {
     const email_verify_token = await this.signEmailVerifyToken({ user_id: user_id.toString(), verify: UserVerifyStatus.Unverified })
-    console.log('Resend verify email:', email_verify_token)
 
     await databaseServices.users.updateOne(
       {
@@ -176,8 +179,6 @@ class UsersService {
         }
       ]
     )
-    // Send email to email user
-    console.log('forgot password token:', forgot_password_token)
     return {
       message: USERS_MESSAGE.CHECK_EMAIL_TO_RESET_PASSWORD
     }
