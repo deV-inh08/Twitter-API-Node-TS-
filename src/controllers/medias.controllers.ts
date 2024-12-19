@@ -4,7 +4,7 @@ import path from "path";
 import { handleUploadSingleImage } from "~/utils/file";
 
 
-export const uploadSignleImageController = async (req: Request, res: Response, next: NextFunction) => {
+export const uploadSingleImageController = async (req: Request, res: Response, next: NextFunction) => {
   const data = await handleUploadSingleImage(req);
   return res.json({
     result: data

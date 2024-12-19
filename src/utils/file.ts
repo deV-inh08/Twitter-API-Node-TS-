@@ -1,17 +1,17 @@
 import { Request } from 'express'
-import formidable from 'formidable'
+import formidable, { File } from 'formidable'
 import fs from 'fs'
 import path from 'path'
+import { UPLOAD_TEMP_DIR } from '~/constants/dir'
 
 export const initFolder = () => {
-  const uploadFolderPaths = path.resolve('uploads')
-  if(!fs.existsSync(uploadFolderPaths)) {
-    return fs.mkdirSync(uploadFolderPaths, {
+  const uploadFolderPath = UPLOAD_TEMP_DIR
+  if(!fs.existsSync(uploadFolderPath)) {
+    return fs.mkdirSync(uploadFolderPath, {
       recursive: true // Folder nested
     })
   }
-}
-
+};
 
 export const handleUploadSingleImage = async (req: Request) => {
   const form = formidable({
@@ -27,17 +27,23 @@ export const handleUploadSingleImage = async (req: Request) => {
       return valid
     }
   })
-  return new Promise((resolve, reject) => {
+  return new Promise<File>((resolve, reject) => {
     form.parse(req, (err, field, files) => {
-      console.log('Field', field)
-      console.log('File', files)
       if(err) {
         reject(err)
       }
       if(!Boolean(files.image)) {
         return reject(new Error('File is empty'))
       }
-      resolve(files)
+      resolve((files.image as File[])[0])
     })
   })
+};
+
+
+export const getNameFromFullName = (fullname: string) => {
+  const namearr = fullname.split('.')
+  console.log(namearr)
+  namearr.pop()
+  return namearr.join('')
 }
