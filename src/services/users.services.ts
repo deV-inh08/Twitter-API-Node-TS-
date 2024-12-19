@@ -215,7 +215,7 @@ class UsersService {
       }
   )
     return user
-  }
+  };
 
   async updateMe(user_id: string, payload: UpdateMeReqBody) {
     const _payload = payload.date_of_birth ? {...payload, date_of_birth: new Date(payload.date_of_birth)}: payload;
@@ -237,7 +237,7 @@ class UsersService {
       }
     )
     return user.value
-  }
+  };
 
   async follow(user_id: string, followed_user_id: string) {
     const follower = await databaseServices.followers.findOne({
@@ -256,7 +256,7 @@ class UsersService {
     return {
       message: USERS_MESSAGE.FOLLOWED
     }
-  }
+  };
 
   async unFollow(user_id: string, followed_user_id: string) {
     const follower = await databaseServices.followers.findOne({
@@ -275,7 +275,7 @@ class UsersService {
     return {
       message: USERS_MESSAGE.UNFOLLOW_SUCCESSS
     }
-  }
+  };
 
   async changePassword(user_id: string, new_password: string) {
     await databaseServices.users.updateOne(
@@ -294,8 +294,7 @@ class UsersService {
   return {
     message: USERS_MESSAGE.CHANGE_PASSWORD_SUCCESS
   }
-  }
-
+  };
 }
 
 const usersService = new UsersService();
