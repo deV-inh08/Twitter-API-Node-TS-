@@ -24,7 +24,7 @@ class UsersService {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
       }
     })
-  }
+  };
 
   private signRefreshToken({user_id, verify}: {user_id: string, verify: UserVerifyStatus}) {
     return signToken({
@@ -38,7 +38,7 @@ class UsersService {
         expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN
       }
     })
-  }
+  };
 
   private signEmailVerifyToken({user_id, verify}: {user_id: string, verify: UserVerifyStatus}) {
     return signToken({
@@ -144,8 +144,7 @@ class UsersService {
   };
 
   async resendVerifyEmail(user_id: string) {
-    const email_verify_token = await this.signEmailVerifyToken({ user_id: user_id.toString(), verify: UserVerifyStatus.Unverified })
-
+    const email_verify_token = await this.signEmailVerifyToken({ user_id: user_id.toString(), verify: UserVerifyStatus.Unverified });
     await databaseServices.users.updateOne(
       {
         _id: new ObjectId(user_id),
