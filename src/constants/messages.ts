@@ -83,7 +83,9 @@ const USERS_MESSAGE = {
 
   OLD_PASSWORD_NOT_MATCH: 'Old password not match',
 
-  CHANGE_PASSWORD_SUCCESS: 'Change password success'
+  CHANGE_PASSWORD_SUCCESS: 'Change password success',
+
+  UPLOAD_SUCCESS: 'Upload success'
 
 } as const
 

@@ -112,7 +112,6 @@ const confirmNewPasswordSchema: ParamSchema = {
   }
 };
 
-
 const forgotPasswordTokenSchema: ParamSchema = {
   trim: true,
   custom: {
