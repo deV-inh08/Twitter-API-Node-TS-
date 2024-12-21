@@ -1,7 +1,7 @@
 import { Request } from "express";
-import { getNameFromFullName, handleUploadImage } from "~/utils/file";
+import { getNameFromFullName, handleUploadImage, handleUploadVideo } from "~/utils/file";
 import sharp from "sharp";
-import { UPLOAD_DIR } from "~/constants/dir";
+import { UPLOAD_IMAGE_DIR } from "~/constants/dir";
 import path from "path";
 import fs from 'fs'
 import { isProduction } from "~/constants/config";
@@ -11,11 +11,11 @@ import { Media } from "~/models/Orther";
 config()
 
 class MediasServices {
-  async handleUploadSingleImage(req: Request) {
+  async uploadImage(req: Request) {
     const files = await handleUploadImage(req);
     const result: Media[] = await Promise.all(files.map( async (file) => {
       const newName = getNameFromFullName(file.newFilename);
-      const newPath = path.resolve(UPLOAD_DIR, `${newName}.jpg`);
+      const newPath = path.resolve(UPLOAD_IMAGE_DIR, `${newName}.jpg`);
       await sharp(file.filepath).jpeg().toFile(newPath);
       fs.unlinkSync(file.filepath);
       return{
@@ -26,6 +26,19 @@ class MediasServices {
       } 
     }))
     return result
+  }
+
+  async uploadVideo(req: Request) {
+    const files = await handleUploadVideo(req)
+    const result: Media[] = files.map((file) => {
+      return {
+        url: isProduction
+        ? `${process.env.HOTS}/static/video/${file.newFilename}`
+        : `http://localhost:${process.env.PORT}/static/video/${file.newFilename}`,
+        type: MediaType.Video
+      }
+    })
+  return result
   }
 };
 

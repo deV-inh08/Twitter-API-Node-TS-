@@ -5,7 +5,7 @@ import { defaultErrorHandler } from './middlewares/error.middlewares'
 import mediasRouters from './routes/medias.routes'
 import { initFolder } from './utils/file'
 import path from 'path'
-import { UPLOAD_DIR } from './constants/dir'
+import { UPLOAD_IMAGE_DIR } from './constants/dir'
 import { config } from 'dotenv'
 import staticRouter from './routes/static.routes'
 config()
@@ -22,7 +22,7 @@ app.use(express.json())
 app.use('/users', userRouter)
 app.use('/medias', mediasRouters)
 app.use('/static', staticRouter)
-// app.use('/static', express.static(UPLOAD_DIR))
+// app.use('/static', express.static(UPLOAD_IMAGE_DIR))
 
 // Connect MongoDb
 // run().catch(console.dir) => connect function
