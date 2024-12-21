@@ -50,9 +50,9 @@ export const serveVideoStreamController = async (req: Request, res: Response, ne
     const start = Number(range?.replace(/\D/g, ''))
 
     // Get bytes end 
-    const end = Math.min(start + chuckSize, videoSize)
+    const end = Math.min(start + chuckSize, videoSize - 1)
 
-    const contentLenght = end - start;
+    const contentLenght = end - start + 1;
     // fix ES modules run Common JS enviroment
     const mime = (await import('mime')).default;
 

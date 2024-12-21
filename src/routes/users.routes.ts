@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
-import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController, followController, unfollowController, changePasswordController } from '~/controllers/users.controllers'
+import { loginController, registerController, logOutController, verifyEmailController, resendVerifyEmailController, forgotPasswordController, verifyForgotPasswordController, resetPasswordController, getMeController, updateMeController, followController, unfollowController, changePasswordController, refreshTokenController } from '~/controllers/users.controllers'
 import { filterMiddleware } from '~/middlewares/common.middlewares'
 import { registerValidator, loginValidator, accessTokenValidator, refreshTokenValidator, emailTokenValidator, forgotPasswordValidator, verifyForgotPasswordValidator, resetPasswordValidator, updateMeValidator, verifiedUserValidator, followValidator, unFollowValidator, changePasswordValidator } from '~/middlewares/users.middlewares'
 import { UpdateMeReqBody } from '~/models/requests/user.request'
@@ -27,6 +27,13 @@ userRouter.post('/register', registerValidator, wrapRequestHandler(registerContr
 // Header: { Authorization: Bearer <access token> }
 // Body { refresh_token }
 userRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapRequestHandler(logOutController))
+
+
+// Refresh token
+// path: /refresh-token
+// POST
+// Body: { refresh_token: string }
+userRouter.post('/refresh-token', refreshTokenValidator, wrapRequestHandler(refreshTokenController))
 
 
 // Verify email

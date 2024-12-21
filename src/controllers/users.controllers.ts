@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import usersService from "~/services/users.services";
 import { NextFunction, ParamsDictionary } from "express-serve-static-core"
-import { ChangePasswordReqBody, FollowRedBody, ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RegisterReqBody, TokenPayload, UnFollowRedParams, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
+import { ChangePasswordReqBody, FollowRedBody, ForgotPasswordReqBody, LoginReqBody, LogoutRequestBody, RefreshTokenRequestBody, RegisterReqBody, TokenPayload, UnFollowRedParams, UpdateMeReqBody, VerifyEmailReqBody } from "~/models/requests/user.request";
 import { ObjectId } from "mongodb";
 import { User } from "~/models/schema/User.schema";
 import USERS_MESSAGE from "~/constants/messages";
@@ -45,6 +45,15 @@ const logOutController = async (req: Request<ParamsDictionary, any, LogoutReques
   })
 };
 
+const refreshTokenController = async (req: Request<ParamsDictionary, any, RefreshTokenRequestBody>, res: Response) => {
+  const { refresh_token } = req.body;
+  const { user_id, verify } = req.decoded_refresh_token as TokenPayload
+  const result = await usersService.refreshToken({ user_id, verify, refresh_token })
+  return res.json({
+    message: USERS_MESSAGE.REFRESH_TOKEN_SUCCESS,
+    result: result
+  })
+};
 
 const verifyEmailController = async (req: Request<ParamsDictionary, any, VerifyEmailReqBody>, res: Response, next: NextFunction) => {
   const { user_id } = req.decoded_email_verify_token as TokenPayload
@@ -151,7 +160,8 @@ const changePasswordController = async (req: Request<ParamsDictionary, any, Chan
 export { 
   loginController, 
   registerController, 
-  logOutController, 
+  logOutController,
+  refreshTokenController,
   verifyEmailController, 
   resendVerifyEmailController, 
   forgotPasswordController,

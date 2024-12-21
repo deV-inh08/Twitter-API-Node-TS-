@@ -33,6 +33,11 @@ export interface LogoutRequestBody {
   refresh_token: string
 }
 
+
+export interface  RefreshTokenRequestBody {
+  refresh_token: string
+}
+
 export interface UpdateMeReqBody {
   name?: string
   date_of_birth?: string
