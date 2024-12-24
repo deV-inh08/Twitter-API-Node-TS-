@@ -8,6 +8,7 @@ import { isProduction } from "~/constants/config";
 import { config } from "dotenv";
 import { MediaType } from "~/constants/enum";
 import { Media } from "~/models/Orther";
+import { encodeHLSWithMultipleVideoStreams } from "~/utils/video";
 config()
 
 class MediasServices {
@@ -38,6 +39,21 @@ class MediasServices {
         type: MediaType.Video
       }
     })
+  return result
+  }
+
+  async uploadVideoHLS(req: Request) {
+    const files = await handleUploadVideo(req);
+    console.log(files)
+    const result: Media[] = await Promise.all(files.map(async (file) => {
+      await encodeHLSWithMultipleVideoStreams(file.filepath)
+      return {
+        url: isProduction
+        ? `${process.env.HOTS}/static/video/${file.newFilename}`
+        : `http://localhost:${process.env.PORT}/static/video/${file.newFilename}`,
+        type: MediaType.Video
+      }
+    }))
   return result
   }
 };

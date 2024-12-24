@@ -7,6 +7,8 @@ import mediasServices from "~/services/media.services";
 import fs from 'fs'
 
 
+
+
 export const uploadImageController = async (req: Request, res: Response, next: NextFunction) => {
   const url = await mediasServices.uploadImage(req)
   return res.json({
@@ -26,6 +28,14 @@ export const serveImageController = (req: Request, res: Response, next: NextFunc
 
 export const uploadVideoController = async (req: Request, res: Response, next: NextFunction) => {
   const url = await mediasServices.uploadVideo(req)
+  return res.json({
+    message: USERS_MESSAGE.UPLOAD_SUCCESS,
+    result: url
+  })
+};
+
+export const uploadVideoHLSController = async (req: Request, res: Response, next: NextFunction) => {
+  const url = await mediasServices.uploadVideoHLS(req)
   return res.json({
     message: USERS_MESSAGE.UPLOAD_SUCCESS,
     result: url
@@ -54,8 +64,8 @@ export const serveVideoStreamController = async (req: Request, res: Response, ne
 
     const contentLenght = end - start + 1;
     // fix ES modules run Common JS enviroment
+    
     const mime = (await import('mime')).default;
-
     const contentType = mime.getType(videoPath) || 'video/*'
     const headers = {
       'Content-Range': `bytes ${start}-${end}/${videoSize}`,
