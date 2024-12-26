@@ -8,10 +8,13 @@ import path from 'path'
 import { UPLOAD_VIDEO_DIR } from './constants/dir'
 import { config } from 'dotenv'
 import staticRouter from './routes/static.routes'
+import cors from 'cors'
 config()
 
 
 const app = express()
+
+app.use(cors())
 
 initFolder()
 

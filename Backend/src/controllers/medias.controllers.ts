@@ -6,9 +6,6 @@ import USERS_MESSAGE from "~/constants/messages";
 import mediasServices from "~/services/media.services";
 import fs from 'fs'
 
-
-
-
 export const uploadImageController = async (req: Request, res: Response, next: NextFunction) => {
   const url = await mediasServices.uploadImage(req)
   return res.json({
@@ -43,7 +40,7 @@ export const uploadVideoHLSController = async (req: Request, res: Response, next
 };
 
 export const serveVideoStreamController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+
     const range = req.headers.range;
     if(!range) {
       return res.status(HTTP_STATUS.BAD_REQUEST).send('Requires Range header')
@@ -77,7 +74,23 @@ export const serveVideoStreamController = async (req: Request, res: Response, ne
     res.writeHead(HTTP_STATUS.PARTIAL_CONTENT, headers);
     const videoStream = fs.createReadStream(videoPath, { start, end })
     videoStream.pipe(res)
-  } catch (err) {
-    next(err)
-  }
 }
+
+
+export const serveVideoM3u8Controller = (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params
+  res.sendFile(path.resolve(UPLOAD_VIDEO_DIR, id, 'master.m3u8'), (err) => {
+    if(err) {
+      res.status((err as any).status).send('Not found') 
+    }
+  })
+};
+
+export const serveSegmentController = (req: Request, res: Response, next: NextFunction) => {
+  const { id, v, segment } = req.params
+  res.sendFile(path.resolve(UPLOAD_VIDEO_DIR, id, v, segment), (err) => {
+    if(err) {
+      res.status((err as any).status).send('Not found') 
+    }
+  })
+};
