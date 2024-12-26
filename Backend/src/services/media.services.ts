@@ -4,6 +4,7 @@ import sharp from "sharp";
 import { UPLOAD_IMAGE_DIR } from "~/constants/dir";
 import path from "path";
 import fs from 'fs'
+import fsPromise from 'fs/promises'
 import { isProduction } from "~/constants/config";
 import { config } from "dotenv";
 import { MediaType } from "~/constants/enum";
@@ -30,7 +31,7 @@ class MediasServices {
   }
 
   async uploadVideo(req: Request) {
-    const files = await handleUploadVideo(req)
+    const files = await handleUploadVideo(req);
     const result: Media[] = files.map((file) => {
       return {
         url: isProduction
@@ -44,14 +45,15 @@ class MediasServices {
 
   async uploadVideoHLS(req: Request) {
     const files = await handleUploadVideo(req);
-    console.log(files)
     const result: Media[] = await Promise.all(files.map(async (file) => {
-      await encodeHLSWithMultipleVideoStreams(file.filepath)
+      await encodeHLSWithMultipleVideoStreams(file.filepath);
+      const newName = getNameFromFullName(file.newFilename);
+      await fsPromise.unlink(file.filepath)
       return {
         url: isProduction
-        ? `${process.env.HOTS}/static/video/${file.newFilename}`
-        : `http://localhost:${process.env.PORT}/static/video/${file.newFilename}`,
-        type: MediaType.Video
+        ? `${process.env.HOTS}/static/video-hls/${newName}`
+        : `http://localhost:${process.env.PORT}/static/video-hls/${newName}`,
+        type: MediaType.HLS
       }
     }))
   return result
@@ -59,4 +61,4 @@ class MediasServices {
 };
 
 const mediasServices = new MediasServices();
-export default mediasServices
+export default mediasServices;
