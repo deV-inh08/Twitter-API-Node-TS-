@@ -94,3 +94,12 @@ export const serveSegmentController = (req: Request, res: Response, next: NextFu
     }
   })
 };
+
+export const videoStatusController = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const result = await mediasServices.getVideoStatus(id as string)
+  return res.json({
+    message: USERS_MESSAGE.GET_VIDEO_STATUS_SUCCESS,
+    result: result
+  })
+};
